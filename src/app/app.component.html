@@ -1,0 +1,67 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" >WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li [ngClass]="{'active':clicked1}"><a class="clickable" (click)="onSelectedProducts()">Home</a></li>
+      <li class="dropdown" [ngClass]="{'active':clicked2}">
+        <a class="dropdown-toggle clickable" data-toggle="dropdown">Products
+          <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a class="clickable" (click)="onProductsPromo()">Promotion</a></li>
+          <li><a class="clickable" (click)="onProductsDispo()">Disponibles</a></li>
+        </ul>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-left" #f="ngForm"(ngSubmit)="doSearch(f.value)">
+      <div class="form-group">
+        <input type="text" class="form-control" name="motCle" ngModel placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Chercher</button>
+    </form>
+    <ul *ngIf="!this.authService.isAuthenticated()" style="margin-right: 60px" class=" nav navbar-nav pull-right">
+      <li>
+        <a (click)="onLogin()"class="btn">
+          <span style="margin-right: 10px">Log in</span>
+          <span class="glyphicon glyphicon-log-in"></span>
+        </a>
+      </li>
+    </ul>
+
+    <ul *ngIf="this.authService.isAuthenticated()" class=" nav navbar-nav pull-right" style="margin-right: 60px">
+
+      <li class="dropdown">
+        <a class="dropdown-toggle clickable" data-toggle="dropdown" ><span style="margin-right: 10px">{{authService.authenticatedUser}}</span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a (click)="onLogout()" class=" clickable">
+                <span style="margin-right: 10px">Log out</span>
+                <span class="glyphicon glyphicon-log-out"></span>
+           </a>
+          </li>
+          <li><a class="clickable" (click)="onGetOrders()">My Orders</a></li>
+          <li><a class="clickable" (click)="onGetProfile()">Your Profile</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class=" nav navbar-nav pull-right clickable" *ngIf="authService.isAuthenticated()">
+      <li>
+        <a (click)="onGoToCaddy()">
+          <span class="badge">{{caddyService?.currentCaddyName}} :
+            {{caddyService.getSize()}}</span>
+          <img class="img-circle img-thumbnail img-rounded" src="assets/images/caddy.png">
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet>
+
+  </router-outlet>
+</div>

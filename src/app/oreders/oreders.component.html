@@ -1,0 +1,46 @@
+<div class="panel panel-primary">
+  <div class="panel-heading text-center"><h4><b>Vos Commandes</b></h4></div>
+  <div class="panel-body text-center">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>date</th>
+        <th>Client Name </th>
+        <th>Montant Total</th>
+        <th>-----</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let o of this.orderService.orders?.content">
+        <td>{{o.id}}</td>
+        <td>{{o.date}}</td>
+        <td>{{o.client.name}}</td>
+        <td>{{o.totalAmount|number:'0.2'}}</td>
+        <td>
+          <span *ngIf="o.payment">Payee ok</span>
+          <span *ngIf="o.payment == null ">
+                <button class="btn btn-success" (click)="payer(o.id)" *ngIf="!orderService.order.id">Payer</button>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+
+
+    </table>
+    <div >
+      <nav>
+        <ul class="pagination">
+          <li [style.display]="this.orderService.orders?.pageable.pageNumber == 0 ? 'none' : 'inline'"><a aria-label="Previous " class="page-link clickable" (click)="this.orderService.getOrdersByUserName(this.authService.authenticatedUser,(i-1))" ><< Previous</a></li>
+          <li *ngFor="let item of [].constructor(this.orderService.orders?.totalPages); let i = index " [ngClass]="{'active' : this.orderService.orders?.pageable.pageNumber==i}">
+
+            <a class="page-link clickable"  (click)="this.orderService.getOrdersByUserName(this.authService.authenticatedUser,i)" > {{i}} </a>
+
+
+          </li>
+          <li [style.display]="this.orderService.orders?.pageable.pageNumber == (this.orderService.orders?.totalPages-1) ? 'none' : 'inline'"><a class="page-link clickable" aria-label="Previous" (click)="this.orderService.getOrdersByUserName(this.authService.authenticatedUser,(i+1))"> Next >></a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
